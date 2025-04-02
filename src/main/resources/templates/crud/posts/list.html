@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post List</title>
+</head>
+<body>
+    <h1>Posts</h1>
+    
+    <!-- Таблица с книгами -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Last update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="post : ${posts.content}">
+                <td th:text="${post.id}"></td>
+                <td th:text="${post.user.username}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.category.name}"></td>
+                <td th:text="${post.category.name}"></td>
+                <td>
+                    <a th:href="@{/books/edit/{id}(id=${book.id})}">Edit</a> |
+                    <a th:href="@{/books/delete/{id}(id=${book.id})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div th:if="${books.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, books.totalPages - 1)}">
+            <a th:href="@{/books(page=${i}, size=${books.size})}" 
+               th:text="${i + 1}"
+               th:class="${books.number == i} ? 'active'"></a> |
+        </span>
+    </div>
+
+    <!-- Кнопка "Добавить книгу" -->
+    <a th:href="@{/books/new}">Add New Book</a>
+</body>
+</html>
