@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post List</title>
+</head>
+<body>
+    <h1>Posts</h1>
+    
+    <!-- Таблица с книгами -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Last update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="post : ${posts.content}">
+                <td th:text="${post.id}"></td>
+                <td th:text="${post.userUsername}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.categoryName}"></td>
+                <td th:text="${post.updatedAt}"></td>
+                <td><a th:href="@{/books/edit/{id}(id=${book.id})}">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div th:if="${posts.totalPages > 1}">
+        <span th:each="i : ${#numbers.sequence(0, posts.totalPages - 1)}">
+            <a th:href="@{/posts(page=${i}, size=${posts.size})}" 
+               th:text="${i + 1}"
+               th:class="${posts.number == i} ? 'active'"></a> |
+        </span>
+    </div>
+</body>
+</html>

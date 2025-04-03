@@ -4,9 +4,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
 import com.example.models.Post;
-import com.example.views.PostViewModel;
+import com.example.views.PostRowViewModel;
 
 public interface PostService {
     public Page<Post> findAll(Pageable pageable);
-    public Page<PostViewModel> getViewModelPage(Pageable pageable);
+    public Page<PostRowViewModel> getViewModelPage(Pageable pageable);
 }
