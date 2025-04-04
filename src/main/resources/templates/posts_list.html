@@ -25,7 +25,7 @@
                 <td th:text="${post.title}"></td>
                 <td th:text="${post.categoryName}"></td>
                 <td th:text="${post.updatedAt}"></td>
-                <td><a th:href="@{/books/edit/{id}(id=${book.id})}">View</a></td>
+                <td><a th:href="@{/posts/post/{id}(id=${post.id})}">View</a></td>
             </tr>
         </tbody>
     </table>

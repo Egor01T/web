@@ -1,5 +1,6 @@
 package com.example.models;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -48,8 +50,7 @@ public class Post extends BaseEntity{
         this.title = title;
     }
 
-    @Lob
-    @Column(name = "text", nullable = true)
+    @Column(name = "text", nullable = true, columnDefinition = "text")
     public String getText() {
         return text;
     }
@@ -106,5 +107,12 @@ public class Post extends BaseEntity{
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = ZonedDateTime.now(ZoneId.systemDefault());
+        // или конкретный часовой пояс:
+        // createdAt = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
     }
 }

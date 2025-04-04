@@ -2,35 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Subscribes List</title>
+    <title>Subscriptions</title>
 </head>
 <body>
-    <h1>Subscribes</h1>
-    
-    <!-- Таблица с книгами -->
+    <h1>My Subscriptions</h1>
     <table border="1">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Author</th>
+                <th>Username</th>
+                <th>Posts</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="post : ${posts.content}">
-                <td th:text="${post.id}"></td>
-                <td th:text="${post.userUsername}"></td>
-                <td><a th:href="@{/books/edit/{id}(id=${book.id})}">Posts</a></td>
+            <tr th:each="subscription : ${subscriptions.content}">
+                <td th:text="${subscription.id}">1</td>
+                <td th:text="${subscription.userUsername}">username</td>
+                <td>
+                    <a th:href="@{/posts/{username}(username=${subscription.userUsername})}">View posts</a>
+                </td>
+                <td>
+                    <a th:href="@{/subscriptions/delete/{id}(id=${subscription.id})}" 
+                       onclick="return confirm('Are you sure you want to unsubscribe?')">Unsubscribe</a>
+                </td>
             </tr>
         </tbody>
     </table>
 
     <!-- Пагинация -->
-    <div th:if="${posts.totalPages > 1}">
-        <span th:each="i : ${#numbers.sequence(0, posts.totalPages - 1)}">
-            <a th:href="@{/posts(page=${i}, size=${posts.size})}" 
-               th:text="${i + 1}"
-               th:class="${posts.number == i} ? 'active'"></a> |
+    <div th:if="${subscriptions.totalPages > 1}">
+        <span th:if="${!subscriptions.first}">
+            <a th:href="@{${pageUrl}(page=0, size=${subscriptions.size})}">First</a>
+            <a th:href="@{${pageUrl}(page=${subscriptions.number-1}, size=${subscriptions.size})}">Previous</a>
         </span>
+        
+        <span th:each="i : ${#numbers.sequence(1, subscriptions.totalPages)}">
+            <a th:if="${i-1 != subscriptions.number}" 
+               th:href="@{${pageUrl}(page=${i-1}, size=${subscriptions.size})}" 
+               th:text="${i}">1</a>
+            <span th:unless="${i-1 != subscriptions.number}" th:text="${i}">1</span>
+        </span>
+        
+        <span th:if="${!subscriptions.last}">
+            <a th:href="@{${pageUrl}(page=${subscriptions.number+1}, size=${subscriptions.size})}">Next</a>
+            <a th:href="@{${pageUrl}(page=${subscriptions.totalPages-1}, size=${subscriptions.size})}">Last</a>
+        </span>
+        
+        <div>
+            <span th:text="'Page ' + (subscriptions.number + 1) + ' of ' + subscriptions.totalPages">Page 1 of 5</span>
+        </div>
     </div>
 </body>
 </html>

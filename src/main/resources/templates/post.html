@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">Post Title</title>
+</head>
+<body>
+    <!-- Основная информация о посте -->
+    <div>
+        <p>Updated at: <span th:text="${post.updatedAt}">updatedAt</span></p>
+        <h1 th:text="${post.title}">Post Title</h1>
+        <p th:text="${post.text}">Post text content...</p>
+        
+        <!-- Информация о канале/авторе и кнопка подписки -->
+        <div>
+            <span>Channel: <span th:text="${post.userUsername}">userUsername</span></span>
+            <button>Subscribe</button>
+        </div>
+        
+        <!-- Лайки/дизлайки -->
+        <div>
+            <span>Likes: <span th:text="${post.likes}">likes</span>, </span>
+            <span>Dislikes: <span th:text="${post.dislikes}">dislikes</span></span>
+        </div>
+        
+        <!-- Кнопки лайков -->
+        <div>
+            <button th:onclick="'likePost(' + ${post.id} + ', true)'">Like</button>
+            <button th:onclick="'likePost(' + ${post.id} + ', false)'">Dislike</button>
+        </div>
+    </div>
+
+    <!-- Секция комментариев -->
+    <div>
+        <h2>Comments</h2>
+        
+        <!-- Пагинация комментариев -->
+        <div th:if="${post.comments.totalPages > 1}">
+            <span>Страница: </span>
+            <span th:each="i : ${#numbers.sequence(1, post.comments.totalPages)}">
+                <a th:if="${i-1 != post.comments.number}"
+                   th:href="@{/post/{id}(id=${post.id}, page=${i-1}, size=${post.comments.size})}"
+                   th:text="${i}"></a>
+                <span th:unless="${i-1 != post.comments.number}" 
+                      th:text="${i}"></span>
+                <span th:unless="${i == post.comments.totalPages}">, </span>
+            </span>
+        </div>
+        
+        <!-- Список комментариев -->
+        <div th:each="comment : ${post.comments.content}">
+            <div>
+                <p><span th:text="${comment.userUsername}">userUsername</span></p>
+                <p th:text="${comment.text}">Comment text...</p>
+                <p>Updated at: <span th:text="${comment.updatedAt}">updatedAt</span></p>
+            </div>
+            <hr>
+        </div>
+        
+        <!-- Форма добавления нового комментария -->
+        <form th:action="@{/post/{id}/comment(id=${post.id})}" method="post">
+            <textarea name="text" required></textarea>
+            <button type="submit">Add Comment</button>
+        </form>
+    </div>
+
+    <script>
+    function likePost(postId, isLike) {
+        fetch('/post/' + postId + '/like', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({isLike: isLike})
+        }).then(response => {
+            if(response.ok) {
+                location.reload();
+            }
+        });
+    }
+    </script>
+</body>
+</html>

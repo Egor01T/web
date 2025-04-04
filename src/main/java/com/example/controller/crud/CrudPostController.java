@@ -3,7 +3,6 @@ package com.example.controller.crud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.models.Post;
 import com.example.services.PostService;
 
-@Controller
+//@Controller
 @RequestMapping("/crud/posts")
-public class PostController {
+public class CrudPostController {
     private final PostService postService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public CrudPostController(PostService postService) {
         this.postService = postService;
     }
 

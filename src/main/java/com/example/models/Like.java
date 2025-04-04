@@ -37,11 +37,11 @@ public class Like extends BaseEntity{
     }
 
     @Column(name = "is_like", nullable = false)
-    public boolean isLike() {
+    public boolean getIsLike() {
         return isLike;
     }
 
-    public void setLike(boolean isLike) {
+    public void setIsLike(boolean isLike) {
         this.isLike = isLike;
     }
 
