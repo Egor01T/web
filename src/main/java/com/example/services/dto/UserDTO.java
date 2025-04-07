@@ -2,6 +2,8 @@ package com.example.services.dto;
 
 import java.time.ZonedDateTime;
 
+import com.example.models.enums.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,10 +14,11 @@ public class UserDTO {
     private String username;
     private String email;
     private String passHash;
+    private Role role = Role.USER;
     private ZonedDateTime createdAt;
 
     public UserDTO(){}
-
+    
     public int getId() {
         return id;
     }
@@ -59,5 +62,14 @@ public class UserDTO {
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @NotNull
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

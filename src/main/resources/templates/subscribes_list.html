@@ -23,8 +23,16 @@
                     <a th:href="@{/posts/{username}(username=${subscription.userUsername})}">View posts</a>
                 </td>
                 <td>
-                    <a th:href="@{/subscriptions/delete/{id}(id=${subscription.id})}" 
-                       onclick="return confirm('Are you sure you want to unsubscribe?')">Unsubscribe</a>
+                    <form th:action="@{/subscriptions/delete/{id}(id=${subscription.id})}" 
+                        method="post"
+                        style="display: inline;">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <button type="submit" 
+                                class="btn-link"
+                                onclick="return confirm('Are you sure you want to unsubscribe?')">
+                            Unsubscribe
+                        </button>
+                    </form>
                 </td>
             </tr>
         </tbody>

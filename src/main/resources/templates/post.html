@@ -7,14 +7,18 @@
 <body>
     <!-- Основная информация о посте -->
     <div>
-        <p>Updated at: <span th:text="${post.updatedAt}">updatedAt</span></p>
+        <p>Last update: <span th:text="${post.updatedAt}">updatedAt</span></p>
         <h1 th:text="${post.title}">Post Title</h1>
         <p th:text="${post.text}">Post text content...</p>
         
         <!-- Информация о канале/авторе и кнопка подписки -->
         <div>
             <span>Channel: <span th:text="${post.userUsername}">userUsername</span></span>
-            <button>Subscribe</button>
+            <form th:action="@{/subscribe/{postId}(postId=${post.id})}" method="post">
+                <input type="hidden" name="userId" th:value="${post.id}"/>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button type="submit">Subscribe</button>
+            </form>
         </div>
         
         <!-- Лайки/дизлайки -->

@@ -7,11 +7,6 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
@@ -25,10 +20,8 @@ public class Post extends BaseEntity{
     private String text;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
-    private Category category;
 
     private Set<Comment> comments;
-    private Set<Tag> tags; 
 
     public Post(){}
 
@@ -77,15 +70,6 @@ public class Post extends BaseEntity{
         this.updatedAt = updatedAt;
     }
 
-    @ManyToOne
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Comment> getComments() {
         return comments;
@@ -93,20 +77,6 @@ public class Post extends BaseEntity{
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "posts_tags",  
-        joinColumns = @JoinColumn(name = "post_id"),  
-        inverseJoinColumns = @JoinColumn(name = "tag_id")  
-    )
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
     }
 
     @PrePersist

@@ -1,21 +1,32 @@
 package com.example.models;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.models.enums.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class User extends BaseEntity implements UserDetails{
     
     private String username;
     private String email;
     private String passHash;
+    private Role role;
     private ZonedDateTime createdAt;
 
     private Set<Post> posts;
@@ -49,6 +60,16 @@ public class User extends BaseEntity{
 
     public void setPassHash(String passHash) {
         this.passHash = passHash;
+    }
+
+    @Column(name = "role",nullable = false)
+    @Enumerated(EnumType.STRING)
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Column(name = "created_at",nullable = false)
@@ -86,5 +107,18 @@ public class User extends BaseEntity{
 
     public void setSubscribes(Set<Subscribe> subscribes) {
         this.subscribes = subscribes;
+    }
+
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(role);
+    }
+
+    @Override
+    @Transient
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        return passHash;
     }
 }

@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.models.User;
-import com.example.repos.UserRepository;
 import com.example.repos.base.BaseUserRepository;
-import com.example.services.UserService;
 import com.example.services.dto.UserDTO;
 import com.example.utils.ValidationUtil;
 
@@ -15,7 +13,7 @@ import com.example.utils.ValidationUtil;
 import jakarta.validation.ConstraintViolation;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl{
 
     private final BaseUserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -28,7 +26,7 @@ public class UserServiceImpl implements UserService{
         this.validationUtil = validationUtil;
     }
     
-    @Override
+    //@Override
     //@Transactional
     public void addUser(UserDTO userDTO) {
         if (!this.validationUtil.isValid(userDTO)) {
@@ -45,10 +43,5 @@ public class UserServiceImpl implements UserService{
         User user = this.modelMapper.map(userDTO, User.class);
 
         this.userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return this.userRepository.findByUsername(username);
     }
 }

@@ -54,6 +54,7 @@ public class PostDTO {
     }
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
+        this.updatedAt = createdAt;
     }
 
 

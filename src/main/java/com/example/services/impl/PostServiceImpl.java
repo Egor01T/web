@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.models.Comment;
+import com.example.models.User;
 import com.example.models.Post;
 import com.example.repos.base.BaseCommentRepository;
 import com.example.repos.base.BaseLikeRepository;
@@ -39,6 +40,15 @@ public class PostServiceImpl {
     public Page<PostRowViewModel> getPostsPage(Pageable pageable){
         Page<Post> pages = postRepository.findAll(pageable);
         return pages.map(entity -> modelMapper.map(entity,PostRowViewModel.class));
+    }
+
+    public Page<PostRowViewModel> getUsersPostsPage(String username,Pageable pageable){
+        Page<Post> pages = postRepository.findByUserUsername(username, pageable);
+        return pages.map(entity -> modelMapper.map(entity,PostRowViewModel.class));
+    }
+
+    public User getUserByPostId(int postId){
+        return postRepository.findUserByPostId(postId).orElseThrow();
     }
 
     public PostViewModel getPostViewModel(int id,Pageable pageable){

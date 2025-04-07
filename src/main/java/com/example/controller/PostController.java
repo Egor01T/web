@@ -28,9 +28,22 @@ public class PostController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model
-        ){
+    ){
         //Переработать Post на PostViewModel и доработать интерфейс сервиса!!!
         Page<PostRowViewModel> posts = postService.getPostsPage(PageRequest.of(page, size));
+        model.addAttribute("posts", posts);
+        return "posts_list";
+    }
+
+    @GetMapping("/{username}")
+    public String usersPostsList(
+            @PathVariable String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model
+    ){
+        //Переработать Post на PostViewModel и доработать интерфейс сервиса!!!
+        Page<PostRowViewModel> posts = postService.getUsersPostsPage(username,PageRequest.of(page, size));
         model.addAttribute("posts", posts);
         return "posts_list";
     }
